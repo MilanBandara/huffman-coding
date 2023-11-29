@@ -54,14 +54,15 @@ def build_huffman_tree_from_leaves():
     #creating leaf nodes for each symbol
     #A = 0.13 ,B = 0.26 ,C = 0.5 ,D =0.11
     test = TreeNode("T",0.11)
-    symbol_1 = TreeNode("A",0.13)
-    symbol_2 = TreeNode("B",0.26)
-    symbol_3 = TreeNode("C",0.5)
-    symbol_4 = TreeNode("D",0.06)
-    symbol_5 = TreeNode("E",0.05)
+    symbol_1 = TreeNode("A",0.05)
+    symbol_2 = TreeNode("B",0.09)
+    symbol_3 = TreeNode("C",0.12)
+    symbol_4 = TreeNode("D",0.13)
+    symbol_5 = TreeNode("E",0.16)
+    symbol_6 = TreeNode("F",0.45)
     
 
-    leaves = [symbol_1,symbol_2,symbol_3,symbol_4,symbol_5]
+    leaves = [symbol_1,symbol_2,symbol_3,symbol_4,symbol_5,symbol_6]
     sorted_leaves = sorted(leaves, key=lambda node: node.probability, reverse=True)
     # #now itteratively create the tree
     count = 1
