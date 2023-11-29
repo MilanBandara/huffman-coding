@@ -5,6 +5,7 @@ class TreeNode:
         self.children = []
         self.parent = None
         self.bit = None
+        self.bit_sequence = False
 
     def add_child(self,child):
         child.parent = self
@@ -13,7 +14,7 @@ class TreeNode:
     def print_tree(self):
         spaces = ' ' * self.get_level() * 3
         prefix = spaces + "|__" if self.parent else ""
-        print(prefix + self.data , self.probability,"Bit - ",self.bit) 
+        print(prefix + self.data , self.probability,"Bit - ",self.bit,"Bit sequence - ",self.bit_sequence) 
         
         if self.children:
             for i in self.children:
@@ -31,10 +32,23 @@ class TreeNode:
         # print(type(self.children))
         
         if self.children:
-            self.children[0].bit = 1
-            self.children[1].bit = 0
+            self.children[0].bit = "1"
+            self.children[1].bit = "0"
             for i in self.children:
                 i.assign_bits()
+    def assign_bit_sequence(self):
+        print(self.data)
+        #handling the root node
+        if not self.parent:
+            for i in self.children:
+                    i.assign_bit_sequence()
+        if self.parent:
+            self.bit_sequence = self.parent.bit_sequence + self.bit
+            if self.children:
+                for i in self.children:
+                        i.assign_bit_sequence()
+            else:
+                self.bit_sequence = self.bit_sequence[1:]
 
 def build_huffman_tree_from_leaves():
     #creating leaf nodes for each symbol
@@ -43,10 +57,11 @@ def build_huffman_tree_from_leaves():
     symbol_1 = TreeNode("A",0.13)
     symbol_2 = TreeNode("B",0.26)
     symbol_3 = TreeNode("C",0.5)
-    symbol_4 = TreeNode("D",0.11)
+    symbol_4 = TreeNode("D",0.06)
+    symbol_5 = TreeNode("E",0.05)
     
 
-    leaves = [symbol_1,symbol_2,symbol_3,symbol_4]
+    leaves = [symbol_1,symbol_2,symbol_3,symbol_4,symbol_5]
     sorted_leaves = sorted(leaves, key=lambda node: node.probability, reverse=True)
     # #now itteratively create the tree
     count = 1
@@ -59,8 +74,18 @@ def build_huffman_tree_from_leaves():
         sorted_leaves.append(new_node)
         sorted_leaves = sorted(sorted_leaves, key=lambda node: node.probability, reverse=True)
         count = count + 1
-    sorted_leaves[-1].assign_bits()    
+    sorted_leaves[-1].bit_sequence = "X" 
+    sorted_leaves[-1].assign_bits()
+    sorted_leaves[-1].assign_bit_sequence()
     sorted_leaves[-1].print_tree()
+
+    # return sorted_leaves[-1]
+
+# def get_codes(root):
+
+
+# huffman_tree_root = build_huffman_tree_from_leaves()
+
 
 
 
