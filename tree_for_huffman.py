@@ -36,8 +36,9 @@ class TreeNode:
             self.children[1].bit = "0"
             for i in self.children:
                 i.assign_bits()
+                
     def assign_bit_sequence(self):
-        print(self.data)
+        # print(self.data)
         #handling the root node
         if not self.parent:
             for i in self.children:
@@ -49,6 +50,33 @@ class TreeNode:
                         i.assign_bit_sequence()
             else:
                 self.bit_sequence = self.bit_sequence[1:]
+
+    def get_leaf_values(self):
+
+        if not self.children:
+            #a leaf node
+            return self.data,self.bit_sequence
+
+        left_values = self.children[0].get_leaf_values()
+        right_values = self.children[1].get_leaf_values()
+        self.children[0].get_leaf_values()
+        self.children[1].get_leaf_values()
+
+        return left_values,right_values
+
+def flatten_tuple(nested_tuple):
+    flattened_list = []
+    for element in nested_tuple:
+        if isinstance(element, tuple):
+            flattened_list.extend(flatten_tuple(element))
+        else:
+            flattened_list.append(element)
+    tuples_list = []
+
+    # for i in range(0, len(flattened_list), 2):
+    #     tuples_list.append((flattened_list[i], flattened_list[i + 1]))
+    # print(tuples_list)
+    return flattened_list
 
 def build_huffman_tree_from_leaves():
     #creating leaf nodes for each symbol
@@ -78,16 +106,13 @@ def build_huffman_tree_from_leaves():
     sorted_leaves[-1].bit_sequence = "X" 
     sorted_leaves[-1].assign_bits()
     sorted_leaves[-1].assign_bit_sequence()
-    sorted_leaves[-1].print_tree()
-
-    # return sorted_leaves[-1]
-
-# def get_codes(root):
-
-
-# huffman_tree_root = build_huffman_tree_from_leaves()
-
-
+    # sorted_leaves[-1].print_tree()
+    flattened_list = flatten_tuple(sorted_leaves[-1].get_leaf_values())
+    tuple_list = []
+    for i in range(0, len(flattened_list), 2):
+        tuple_list.append((flattened_list[i], flattened_list[i + 1]))
+    flattened_list = tuple_list
+    print(flattened_list)
 
 
 if __name__ == '__main__':
